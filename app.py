@@ -42,5 +42,26 @@ def detail_menu(id):
 def sapa_user(nama):
     return f"<h1>Halo, {nama}!</h1><p>Selamat datang di Kantin Kampus.</p>"
 
+@app.route('/kontak', methods=['GET', 'POST'])
+def kontak():
+    if request.method == 'POST':
+        nama = request.form.get('nama')
+        pesan = request.form.get('pesan')
+        flash(f'Terima kasih, {nama}! Masukan Anda telah berhasil dikirim.', 'success')
+        return redirect(url_for('kontak'))
+    return render_template('kontak.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        u = request.form.get('username')
+        p = request.form.get('password')
+        if u == 'admin' and p == '12345':
+            flash('Login berhasil! Selamat datang, Admin Kantin.', 'success')
+            return redirect(url_for('home'))
+        flash('Username atau password salah! Coba lagi.', 'danger')
+        return redirect(url_for('login'))
+    return render_template('login.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
